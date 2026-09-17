@@ -1,0 +1,6 @@
+{
+  "name": "Mantra Therapy",
+  "description": "Sacred Vedic and Jain mantra therapy, Japa rosary mala counter, and curated practices for meditation and mindfulness.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
