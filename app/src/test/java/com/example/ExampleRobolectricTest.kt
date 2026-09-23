@@ -9,7 +9,6 @@ import com.example.ui.MantraViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -61,5 +60,40 @@ class ExampleRobolectricTest {
 
         viewModel.setSearchQuery("Wealth")
         assertEquals("Wealth", viewModel.searchQuery.value)
+    }
+
+    @Test
+    fun testEditProfile() = runBlocking {
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        val viewModel = MantraViewModel(app)
+
+        val initialProfile = viewModel.profile.value
+        assertNotNull(initialProfile)
+
+        // Update profile with custom details
+        viewModel.updateProfile(
+            name = "Aarav Sharma",
+            path = "Bhaktamara Stotra Sadhana",
+            practiceTime = "Sunrise • Ushakal",
+            avatarSymbol = "🪷",
+            dailyGoal = 216,
+            sankalpa = "Cultivating compassion and clarity through sacred sound."
+        )
+
+        val updatedProfile = viewModel.profile.value
+        assertEquals("Aarav Sharma", updatedProfile.name)
+        assertEquals("Bhaktamara Stotra Sadhana", updatedProfile.path)
+        assertEquals("Sunrise • Ushakal", updatedProfile.practiceTime)
+        assertEquals("🪷", updatedProfile.avatarSymbol)
+        assertEquals(216, updatedProfile.dailyGoal)
+        assertEquals("Cultivating compassion and clarity through sacred sound.", updatedProfile.sankalpa)
+
+        // Reset to defaults
+        viewModel.resetProfileToDefaults()
+        val resetProfile = viewModel.profile.value
+        assertEquals("Sadhaka Practitioner", resetProfile.name)
+        assertEquals("Preksha Meditation & Japa Path", resetProfile.path)
+        assertEquals("ॐ", resetProfile.avatarSymbol)
+        assertEquals(108, resetProfile.dailyGoal)
     }
 }

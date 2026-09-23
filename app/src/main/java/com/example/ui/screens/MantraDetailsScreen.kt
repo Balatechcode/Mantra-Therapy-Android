@@ -20,16 +20,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.SelfImprovement
 import androidx.compose.material.icons.filled.Spa
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -182,7 +182,7 @@ fun MantraDetailsScreen(
                                         .testTag("details_listen_audio_button")
                                 ) {
                                     Icon(
-                                        imageVector = if (isPlayingAudio) Icons.Filled.Pause else Icons.Filled.VolumeUp,
+                                        imageVector = if (isPlayingAudio) Icons.Filled.Pause else Icons.AutoMirrored.Filled.VolumeUp,
                                         contentDescription = null,
                                         modifier = Modifier.size(16.dp)
                                     )
@@ -384,7 +384,7 @@ fun MantraDetailsScreen(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.MenuBook,
+                                imageVector = Icons.AutoMirrored.Filled.MenuBook,
                                 contentDescription = null,
                                 tint = WarmClaySubtle,
                                 modifier = Modifier.size(15.dp)

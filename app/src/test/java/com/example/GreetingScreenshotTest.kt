@@ -1,9 +1,13 @@
 package com.example
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import com.example.data.MantraRepository
+import com.example.data.PractitionerProfile
 import com.example.ui.screens.HomeScreen
+import com.example.ui.screens.ProfileScreen
 import com.example.ui.screens.SplashScreen
 import com.example.ui.theme.MantraTherapyTheme
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
@@ -45,9 +49,34 @@ class GreetingScreenshotTest {
                     onViewAllCategories = {},
                     onSelectMantra = {},
                     onContinuePractice = {},
-                    onOpenProfile = {}
+                    onOpenProfile = {},
+                    practitionerAvatar = "ॐ",
+                    practitionerName = "Sadhaka Practitioner"
                 )
             }
         }
+    }
+
+    @Test
+    fun profile_screen_and_edit_dialog_render() {
+        composeTestRule.setContent {
+            MantraTherapyTheme {
+                ProfileScreen(
+                    profile = PractitionerProfile(),
+                    totalRepetitions = 2592,
+                    totalSessions = 24,
+                    vibrationEnabled = true,
+                    onToggleVibration = {},
+                    onSaveProfile = { _, _, _, _, _, _ -> },
+                    onResetProfile = {}
+                )
+            }
+        }
+
+        // Click Edit Profile button to open dialog
+        composeTestRule.onNodeWithTag("edit_profile_button").performClick()
+        composeTestRule.onNodeWithTag("edit_profile_dialog").assertExists()
+        composeTestRule.onNodeWithTag("edit_profile_name_input").assertExists()
+        composeTestRule.onNodeWithTag("edit_profile_save_button").assertExists()
     }
 }

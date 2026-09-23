@@ -1,12 +1,15 @@
 package com.example.ui
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.audio.SacredSoundPlayer
 import com.example.data.AppDatabase
 import com.example.data.MantraEntity
 import com.example.data.MantraRepository
+import com.example.data.PractitionerProfile
 import com.example.ui.components.AppDestination
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -101,6 +104,12 @@ class MantraViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _dailyReminderTime = MutableStateFlow("Brahma Muhurta • 06:00 AM")
     val dailyReminderTime: StateFlow<String> = _dailyReminderTime.asStateFlow()
+
+    // Practitioner Profile with SharedPreferences Persistence
+    private val prefs: SharedPreferences = application.getSharedPreferences("practitioner_profile_prefs", Context.MODE_PRIVATE)
+
+    private val _profile = MutableStateFlow(loadProfile())
+    val profile: StateFlow<PractitionerProfile> = _profile.asStateFlow()
 
     private var japaTimerJob: Job? = null
 
@@ -290,6 +299,55 @@ class MantraViewModel(application: Application) : AndroidViewModel(application) 
 
     fun toggleVibration() {
         _vibrationEnabled.value = !_vibrationEnabled.value
+    }
+
+    private fun loadProfile(): PractitionerProfile {
+        return PractitionerProfile(
+            name = prefs.getString("practitioner_name", "Sadhaka Practitioner") ?: "Sadhaka Practitioner",
+            path = prefs.getString("practitioner_path", "Preksha Meditation & Japa Path") ?: "Preksha Meditation & Japa Path",
+            practiceTime = prefs.getString("practitioner_time", "Brahma Muhurta Practice") ?: "Brahma Muhurta Practice",
+            avatarSymbol = prefs.getString("practitioner_avatar", "ॐ") ?: "ॐ",
+            dailyGoal = prefs.getInt("practitioner_goal", 108),
+            sankalpa = prefs.getString(
+                "practitioner_sankalpa",
+                "May my daily practice awaken inner stillness, obstacle removal, and supreme peace."
+            ) ?: "May my daily practice awaken inner stillness, obstacle removal, and supreme peace."
+        )
+    }
+
+    fun updateProfile(
+        name: String,
+        path: String,
+        practiceTime: String,
+        avatarSymbol: String,
+        dailyGoal: Int,
+        sankalpa: String
+    ) {
+        val updated = PractitionerProfile(
+            name = name.trim().ifEmpty { "Sadhaka Practitioner" },
+            path = path.trim().ifEmpty { "Preksha Meditation & Japa Path" },
+            practiceTime = practiceTime.trim().ifEmpty { "Brahma Muhurta Practice" },
+            avatarSymbol = avatarSymbol.trim().ifEmpty { "ॐ" },
+            dailyGoal = if (dailyGoal > 0) dailyGoal else 108,
+            sankalpa = sankalpa.trim().ifEmpty {
+                "May my daily practice awaken inner stillness, obstacle removal, and supreme peace."
+            }
+        )
+        _profile.value = updated
+        prefs.edit()
+            .putString("practitioner_name", updated.name)
+            .putString("practitioner_path", updated.path)
+            .putString("practitioner_time", updated.practiceTime)
+            .putString("practitioner_avatar", updated.avatarSymbol)
+            .putInt("practitioner_goal", updated.dailyGoal)
+            .putString("practitioner_sankalpa", updated.sankalpa)
+            .apply()
+    }
+
+    fun resetProfileToDefaults() {
+        val defaultProfile = PractitionerProfile()
+        _profile.value = defaultProfile
+        prefs.edit().clear().apply()
     }
 
     override fun onCleared() {

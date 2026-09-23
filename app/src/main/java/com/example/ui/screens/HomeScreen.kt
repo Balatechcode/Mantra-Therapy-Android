@@ -72,6 +72,8 @@ fun HomeScreen(
     onSelectMantra: (MantraEntity) -> Unit,
     onContinuePractice: (MantraEntity) -> Unit,
     onOpenProfile: () -> Unit,
+    practitionerAvatar: String = "ॐ",
+    practitionerName: String = "Sadhaka",
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -152,7 +154,7 @@ fun HomeScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "ॐ",
+                            text = practitionerAvatar,
                             fontFamily = FontFamily.Serif,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,

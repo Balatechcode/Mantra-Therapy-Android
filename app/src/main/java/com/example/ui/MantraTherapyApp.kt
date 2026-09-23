@@ -50,6 +50,7 @@ fun MantraTherapyApp(
     val totalRepetitions by viewModel.totalRepetitions.collectAsState()
     val totalSessions by viewModel.totalSessions.collectAsState()
     val vibrationEnabled by viewModel.vibrationEnabled.collectAsState()
+    val profile by viewModel.profile.collectAsState()
 
     MantraTherapyTheme {
         // System Back Handling
@@ -150,7 +151,9 @@ fun MantraTherapyApp(
                                         onViewAllCategories = { viewModel.setDestination(AppDestination.CATEGORIES) },
                                         onSelectMantra = { mantra -> viewModel.openMantraDetails(mantra) },
                                         onContinuePractice = { mantra -> viewModel.startPractice(mantra) },
-                                        onOpenProfile = { viewModel.setDestination(AppDestination.PROFILE) }
+                                        onOpenProfile = { viewModel.setDestination(AppDestination.PROFILE) },
+                                        practitionerAvatar = profile.avatarSymbol,
+                                        practitionerName = profile.name
                                     )
                                 }
                                 AppDestination.SEARCH -> {
@@ -182,10 +185,17 @@ fun MantraTherapyApp(
                                 }
                                 AppDestination.PROFILE -> {
                                     ProfileScreen(
+                                        profile = profile,
                                         totalRepetitions = totalRepetitions,
                                         totalSessions = totalSessions,
                                         vibrationEnabled = vibrationEnabled,
-                                        onToggleVibration = { viewModel.toggleVibration() }
+                                        onToggleVibration = { viewModel.toggleVibration() },
+                                        onSaveProfile = { name, path, time, avatar, goal, sankalpa ->
+                                            viewModel.updateProfile(name, path, time, avatar, goal, sankalpa)
+                                        },
+                                        onResetProfile = {
+                                            viewModel.resetProfileToDefaults()
+                                        }
                                     )
                                 }
                             }
