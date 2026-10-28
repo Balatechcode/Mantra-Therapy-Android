@@ -24,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.Button
@@ -34,6 +35,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +43,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.MantraEntity
@@ -78,22 +82,35 @@ fun HomeScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    // Purpose chips matching design
+    // Purpose chips matching authentic catalog
     val purposeChips = listOf(
-        "All", "Success", "Concentration", "Wealth", "Good Fortune", "Fame", "Resolution Power"
+        "All", "Fortune", "Fame", "Success", "Concentration", "Vachan Siddhi", "Wealth", "Auspiciousness"
     )
 
-    // Mantra of the day: Navkar / Auspicious Beginning
-    val mantraOfDay = allMantras.firstOrNull { it.id == "auspicious_beginning" }
+    // Filtered mantras for the catalog display
+    val filteredMantras = remember(allMantras, selectedPurposeChip) {
+        if (selectedPurposeChip == "All") {
+            allMantras
+        } else {
+            allMantras.filter {
+                it.purposeGroup.equals(selectedPurposeChip, ignoreCase = true) ||
+                        it.category.contains(selectedPurposeChip, ignoreCase = true)
+            }
+        }
+    }
+
+    // Mantra of the day: Navkar Mahamantra / Auspicious Beginning
+    val mantraOfDay = allMantras.firstOrNull { it.id == "mantra_01_namaskar" }
+        ?: allMantras.firstOrNull { it.id == "mantra_02_auspicious_beginning" }
         ?: allMantras.firstOrNull()
 
-    // Active practice: Attaining Success
-    val activePracticeMantra = allMantras.firstOrNull { it.id == "attaining_success" }
+    // Active practice: Attaining Success (Bhaktamara)
+    val activePracticeMantra = allMantras.firstOrNull { it.id == "mantra_04_attaining_success" }
         ?: allMantras.firstOrNull()
 
     // Recently viewed items
-    val resolutionPowerMantra = allMantras.firstOrNull { it.id == "resolution_power" }
-    val materialisticProsperityMantra = allMantras.firstOrNull { it.id == "materialistic_prosperity" }
+    val resolutionPowerMantra = allMantras.firstOrNull { it.id == "mantra_05_resolution_power" }
+    val materialisticProsperityMantra = allMantras.firstOrNull { it.id == "mantra_18_materialistic_prosperity_1" }
 
     Box(
         modifier = modifier
@@ -333,19 +350,21 @@ fun HomeScreen(
 
                         // Sacred Script
                         Text(
-                            text = "नमो अरिहंताणं",
+                            text = mantraOfDay?.devanagariShort ?: "णमो अरहंताणं",
                             fontFamily = FontFamily.Serif,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 24.sp,
                             color = SandalwoodContainer,
-                            letterSpacing = 0.5.sp
+                            letterSpacing = 0.5.sp,
+                            textAlign = TextAlign.Center
                         )
 
                         // Transliteration
                         Text(
-                            text = "Namo arahantaanam",
+                            text = mantraOfDay?.transliteration?.lines()?.firstOrNull() ?: "Namo Arahantaanam",
                             style = MantraItalicStyle,
-                            color = WarmClaySubtle
+                            color = WarmClaySubtle,
+                            textAlign = TextAlign.Center
                         )
 
                         Box(
@@ -355,13 +374,13 @@ fun HomeScreen(
                                 .background(SubtleSandstoneBorder)
                         )
 
-                        // Meaning
+                        // Meaning / Benefit
                         Text(
-                            text = "“I bow to the enlightened souls who have conquered all inner enemies.”",
+                            text = "“${mantraOfDay?.meaning ?: mantraOfDay?.benefit ?: "Homage to the Arihants, Siddhas, Acharyas, Upadhyayas, and all Sadhus."}”",
                             fontSize = 13.sp,
                             color = WarmClaySubtle,
                             lineHeight = 19.sp,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
 
@@ -568,14 +587,14 @@ fun HomeScreen(
 
                             Column {
                                 Text(
-                                    text = "Resolution Power",
+                                    text = resolutionPowerMantra?.title ?: "Resolution Power",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = DeepUmberTitle
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "ॐ ह्रीं नमो सिद्धाणं",
+                                    text = resolutionPowerMantra?.devanagariShort ?: "ॐ ह्रीं णमो सिद्धाणं।",
                                     fontFamily = FontFamily.Serif,
                                     fontSize = 12.sp,
                                     color = SandalwoodPrimary
@@ -635,14 +654,14 @@ fun HomeScreen(
 
                             Column {
                                 Text(
-                                    text = "Materialistic Prosperity",
+                                    text = materialisticProsperityMantra?.title ?: "Materialistic Prosperity",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = DeepUmberTitle
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "ॐ श्रीं महालक्ष्म्यै नमः",
+                                    text = materialisticProsperityMantra?.devanagariShort ?: "अरिहंतसिद्ध आयरिय...",
                                     fontFamily = FontFamily.Serif,
                                     fontSize = 12.sp,
                                     color = SandalwoodPrimary
@@ -654,6 +673,133 @@ fun HomeScreen(
                                 fontSize = 11.sp,
                                 color = WarmClaySubtle
                             )
+                        }
+                    }
+                }
+            }
+
+            // Sacred Mantra Catalog Section
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = if (selectedPurposeChip == "All") "SACRED MANTRAS (${filteredMantras.size})" else "$selectedPurposeChip MANTRAS (${filteredMantras.size})",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.sp,
+                        color = DeepUmberTitle
+                    )
+                    Text(
+                        text = "19 Sacred Chants",
+                        fontSize = 11.sp,
+                        color = WarmClaySubtle
+                    )
+                }
+
+                filteredMantras.forEach { mantra ->
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .clickable { onSelectMantra(mantra) }
+                            .testTag("mantra_card_${mantra.id}"),
+                        shape = RoundedCornerShape(16.dp),
+                        color = PristineVellum,
+                        border = androidx.compose.foundation.BorderStroke(1.dp, SubtleSandstoneBorder),
+                        shadowElevation = 2.dp
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(14.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Surface(
+                                        shape = RoundedCornerShape(6.dp),
+                                        color = OchreGoldFixed.copy(alpha = 0.5f)
+                                    ) {
+                                        Text(
+                                            text = mantra.number,
+                                            fontSize = 10.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = SandalwoodPrimary,
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                        )
+                                    }
+                                    Text(
+                                        text = mantra.purposeGroup,
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = WarmClaySubtle
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                Text(
+                                    text = mantra.title,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 15.sp,
+                                    color = DeepUmberTitle
+                                )
+
+                                Spacer(modifier = Modifier.height(2.dp))
+
+                                Text(
+                                    text = mantra.devanagariShort,
+                                    fontFamily = FontFamily.Serif,
+                                    fontSize = 13.sp,
+                                    color = SandalwoodContainer
+                                )
+
+                                Spacer(modifier = Modifier.height(3.dp))
+
+                                Text(
+                                    text = mantra.benefit,
+                                    fontSize = 11.sp,
+                                    color = WarmClaySubtle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+
+                            Column(
+                                horizontalAlignment = Alignment.End,
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                IconButton(
+                                    onClick = { onContinuePractice(mantra) },
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(SurfaceContainer)
+                                        .testTag("practice_button_${mantra.id}")
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.PlayArrow,
+                                        contentDescription = "Practice",
+                                        tint = SandalwoodContainer,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+
+                                Text(
+                                    text = "${mantra.targetRepetitions} beads",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = OchreGoldSecondary
+                                )
+                            }
                         }
                     }
                 }

@@ -35,12 +35,24 @@ class ExampleRobolectricTest {
         repo.initializeSeedDataIfNeeded()
 
         val list = repo.allMantras.first()
-        assertTrue("Seed mantras must not be empty", list.isNotEmpty())
+        assertEquals(19, list.size)
 
-        val attainingSuccess = list.find { it.id == "attaining_success" }
+        val namaskar = list.find { it.id == "mantra_01_namaskar" }
+        assertNotNull(namaskar)
+        assertEquals("Mantra 01", namaskar?.number)
+        assertEquals("Namaskar Mahamantra", namaskar?.title)
+        assertEquals("Auspiciousness", namaskar?.purposeGroup)
+
+        val attainingSuccess = list.find { it.id == "mantra_04_attaining_success" }
         assertNotNull(attainingSuccess)
-        assertEquals("Mantra 01", attainingSuccess?.number)
+        assertEquals("Mantra 04", attainingSuccess?.number)
         assertEquals(108, attainingSuccess?.targetRepetitions)
+
+        val vachanSiddhi = list.filter { it.purposeGroup == "Vachan Siddhi" }
+        assertEquals(5, vachanSiddhi.size)
+
+        val fortune = list.filter { it.purposeGroup == "Fortune" }
+        assertEquals(3, fortune.size)
     }
 
     @Test

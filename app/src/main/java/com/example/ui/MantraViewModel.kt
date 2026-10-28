@@ -161,8 +161,8 @@ class MantraViewModel(application: Application) : AndroidViewModel(application) 
         if (target != null) {
             _selectedMantra.value = target
             _japaTarget.value = target.targetRepetitions
-            _japaCount.value = if (target.id == "attaining_success") 47 else 0
-            _elapsedSeconds.value = if (target.id == "attaining_success") 763 else 0
+            _japaCount.value = if (target.id.contains("attaining_success")) 47 else 0
+            _elapsedSeconds.value = if (target.id.contains("attaining_success")) 763 else 0
             _isJapaPaused.value = false
             _isCompletionDialogVisible.value = false
             startTimer()

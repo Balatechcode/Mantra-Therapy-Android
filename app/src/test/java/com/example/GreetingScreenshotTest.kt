@@ -55,6 +55,9 @@ class GreetingScreenshotTest {
                 )
             }
         }
+        composeTestRule.onNodeWithTag("mantra_card_mantra_01_namaskar").assertExists()
+        composeTestRule.onNodeWithTag("mantra_card_mantra_04_attaining_success").assertExists()
+        composeTestRule.onNodeWithTag("mantra_card_mantra_19_materialistic_prosperity_2").assertExists()
     }
 
     @Test

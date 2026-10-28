@@ -21,8 +21,14 @@ interface MantraDao {
     @Query("SELECT * FROM mantras WHERE purposeGroup = :category OR category LIKE '%' || :category || '%'")
     fun getMantrasByCategory(category: String): Flow<List<MantraEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(mantras: List<MantraEntity>)
+
+    @Query("DELETE FROM mantras")
+    suspend fun deleteAllMantras()
+
+    @Query("SELECT COUNT(*) FROM practice_sessions")
+    suspend fun getSessionCount(): Int
 
     @Update
     suspend fun update(mantra: MantraEntity)

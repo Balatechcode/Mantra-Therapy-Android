@@ -69,18 +69,17 @@ fun CategoriesScreen(
     modifier: Modifier = Modifier
 ) {
     val categories = listOf(
-        CategoryItem("Namaskar Mahamantra", "5 practices", "Foundation of Jain practice", Icons.Filled.SelfImprovement),
-        CategoryItem("Auspicious Beginning", "8 practices", "Morning & commencement", Icons.Filled.Flare, isGold = true),
-        CategoryItem("Rare Things", "4 practices", "Attaining difficult goals", Icons.Filled.Diamond),
-        CategoryItem("Success", "12 practices", "Victory & fulfillment", Icons.Filled.EmojiEvents, isGold = true),
-        CategoryItem("Resolution Power", "7 practices", "Willpower & determination", Icons.Filled.Psychology),
-        CategoryItem("Concentration", "9 practices", "Focus & dharana", Icons.Filled.Spa, isGold = true),
-        CategoryItem("Good Fortune", "6 practices", "Auspicious destiny", Icons.Filled.Stars, isGold = true),
-        CategoryItem("Fame", "5 practices", "Honor & respect", Icons.Filled.Brightness5),
-        CategoryItem("Vachan Siddhi", "4 practices", "Power of truth & speech", Icons.Filled.RecordVoiceOver),
-        CategoryItem("Materialistic Prosperity", "11 practices", "Financial abundance", Icons.Filled.AutoAwesome, isGold = true),
-        CategoryItem("Wealth & Welfare", "8 practices", "Total well-being", Icons.Filled.FilterDrama, isGold = true),
-        CategoryItem("Spiritual Prosperity", "10 practices", "Inner liberation", Icons.Filled.ModeNight)
+        CategoryItem("Namaskar Mahamantra", "Mantra 01 • Supreme Obeisance", "Universal welfare & auspiciousness", Icons.Filled.SelfImprovement, isGold = true),
+        CategoryItem("Auspicious Beginning", "Mantra 02 • Sunrise Chanting", "Sacred ambience & desire fulfillment", Icons.Filled.Flare, isGold = true),
+        CategoryItem("Good Fortune", "3 Chants • Mantras 07, 08, 09", "Healing, prosperity & divine grace", Icons.Filled.Stars, isGold = true),
+        CategoryItem("Vachan Siddhi", "5 Chants • Mantras 12 to 16", "Power of truth & speech mastery", Icons.Filled.RecordVoiceOver, isGold = true),
+        CategoryItem("Augmentation of Fame", "2 Chants • Mantras 10, 11", "Mantra siddhi, honour & respect", Icons.Filled.Brightness5),
+        CategoryItem("Attaining Success", "Mantra 04 • Bhaktamara Stotra", "Profit, victory & material gain", Icons.Filled.EmojiEvents, isGold = true),
+        CategoryItem("Concentration", "Mantra 06 • 5 Body Centers", "Mind focus & obstacle removal", Icons.Filled.Spa, isGold = true),
+        CategoryItem("Resolution Power", "Mantra 05 • Darshan Kendra", "Willpower & steadfast commitment", Icons.Filled.Psychology),
+        CategoryItem("Materialistic Prosperity", "2 Chants • Mantras 18, 19", "Financial abundance & welfare", Icons.Filled.AutoAwesome, isGold = true),
+        CategoryItem("Obtaining Rare Things", "Mantra 03 • Sambhavanatha", "Attaining rare & precious goals", Icons.Filled.Diamond),
+        CategoryItem("Becoming Arhat", "Mantra 17 • Anand Kendra", "Inner spiritual self-realization", Icons.Filled.ModeNight)
     )
 
     Box(

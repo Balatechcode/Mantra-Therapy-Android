@@ -108,6 +108,20 @@ fun PracticeModeScreen(
         16
     }
 
+    // Grand siddhi target tracking for high-repetition mantras
+    val grandTarget = when {
+        mantra.frequencyLabel.contains("125,000") || mantra.procedure.contains("125,000") -> 125000
+        mantra.frequencyLabel.contains("1,211") || mantra.procedure.contains("1,211") -> 1211
+        mantra.frequencyLabel.contains("1,000") || mantra.procedure.contains("1,000") -> 1000
+        else -> targetCount
+    }
+    val roundText = if (grandTarget > targetCount) {
+        val totalRounds = (grandTarget + targetCount - 1) / targetCount
+        "1 of $totalRounds"
+    } else {
+        "1 of 1"
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -378,7 +392,7 @@ fun PracticeModeScreen(
                         )
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "1 of 1",
+                            text = roundText,
                             fontFamily = FontFamily.Serif,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
